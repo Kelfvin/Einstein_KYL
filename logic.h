@@ -9,30 +9,30 @@ class Logic
 public:
     Logic();
 private:
-    QVector<QVector<int>> redValueChart; //ºì·½¼ÛÖµ±í
-    QVector<QVector<int>> blueValueChart; //À¶·½¼ÛÖµ±í
+    QVector<QVector<int>> redValueChart; //çº¢æ–¹ä»·å€¼è¡¨
+    QVector<QVector<int>> blueValueChart; //è“æ–¹ä»·å€¼è¡¨
 
-    QVector<QVector<int>> virtueTable; //´æ´¢Ò»¸öÇ°¶ËµÄÆåÅÌ£¬·ÀÖ¹³ö´í
+    QVector<QVector<int>> virtueTable; //å­˜å‚¨ä¸€ä¸ªå‰ç«¯çš„æ£‹ç›˜ï¼Œé˜²æ­¢å‡ºé”™
 
     QVector<int> redthreaten;
     QVector<int> bluethreaten;
-    QVector<int> redValue;           //ºì·½Ã¿¸öÆå×ÓµÄ¼ÛÖµ
-    QVector<int> blueValue;           //À¶·½Ã¿¸öÆå×ÓµÄ¼ÛÖµ
-    QVector<float> redProbability;      //ºì·½Ã¿¸öÆå×ÓµÄ¸ÅÂÊ
-    QVector<float> blueProbability;     //À¶·½Ã¿¸öÆå×ÓµÄ¸ÅÂÊ
-    QVector<QVector<bool>> blueprobabilityflag; //À¶·½Ç°Ò»¸ö´ú±í¶ÔÓ¦Êı×ÖµÄÆå×ÓÊÇ·ñ´æÔÚ£¬ÖĞ¼ä´ú±í¸ÃÊı×Ö¶ÔÓ¦Æå×Ó¸ÅÂÊÊÇ·ñ¼ÆËã¹ıÁË£¬ºó´ú±í¼ÛÖµ
-    QVector<QVector<bool>> redprobabilityflag;  //ºì·½Ç°Ò»¸ö´ú±í¶ÔÓ¦Êı×ÖµÄÆå×ÓÊÇ·ñ´æÔÚ£¬ÖĞ¼ä´ú±í¸ÃÊı×Ö¶ÔÓ¦Æå×Ó¸ÅÂÊÊÇ·ñ¼ÆËã¹ıÁË£¬ºó´ú±í¼ÛÖµ
+    QVector<int> redValue;           //çº¢æ–¹æ¯ä¸ªæ£‹å­çš„ä»·å€¼
+    QVector<int> blueValue;           //è“æ–¹æ¯ä¸ªæ£‹å­çš„ä»·å€¼
+    QVector<float> redProbability;      //çº¢æ–¹æ¯ä¸ªæ£‹å­çš„æ¦‚ç‡
+    QVector<float> blueProbability;     //è“æ–¹æ¯ä¸ªæ£‹å­çš„æ¦‚ç‡
+    QVector<QVector<bool>> blueprobabilityflag; //è“æ–¹å‰ä¸€ä¸ªä»£è¡¨å¯¹åº”æ•°å­—çš„æ£‹å­æ˜¯å¦å­˜åœ¨ï¼Œä¸­é—´ä»£è¡¨è¯¥æ•°å­—å¯¹åº”æ£‹å­æ¦‚ç‡æ˜¯å¦è®¡ç®—è¿‡äº†ï¼Œåä»£è¡¨ä»·å€¼
+    QVector<QVector<bool>> redprobabilityflag;  //çº¢æ–¹å‰ä¸€ä¸ªä»£è¡¨å¯¹åº”æ•°å­—çš„æ£‹å­æ˜¯å¦å­˜åœ¨ï¼Œä¸­é—´ä»£è¡¨è¯¥æ•°å­—å¯¹åº”æ£‹å­æ¦‚ç‡æ˜¯å¦è®¡ç®—è¿‡äº†ï¼Œåä»£è¡¨ä»·å€¼
 
 
-    int random; //»ñÈ¡Ç°¶ËµÄ÷»×ÓÊı
+    int random; //è·å–å‰ç«¯çš„éª°å­æ•°
     int whoplay;
     int sente=1;
     int depth;
 
-    const float k1=1.0; //ĞèÒªµÄk1ÏµÊı
-    const float k2=-2.3f; //ĞèÒªµÄk2ÏµÊı````
-    const float k3=-0.1f; //ĞèÒªµÄk3ÏµÊı
-    const float k4=0.0; //ĞèÒªµÄk4ÏµÊı
+    const float k1=1.0; //éœ€è¦çš„k1ç³»æ•°
+    const float k2=-2.3f; //éœ€è¦çš„k2ç³»æ•°````
+    const float k3=-0.1f; //éœ€è¦çš„k3ç³»æ•°
+    const float k4=0.0; //éœ€è¦çš„k4ç³»æ•°
     const int infinity=128;
     const int SIZE=6;
     const int LINE=5;
@@ -40,9 +40,9 @@ private:
 private:
     bool isThereBlue();
     bool isThereRed();
-    bool specialDeal(int& x,int& y);//²Ğ¾Ö´¦Àí
+    bool specialDeal(int& x,int& y);//æ®‹å±€å¤„ç†
 
-    //²©ŞÄº¯Êı
+    //åšå¼ˆå‡½æ•°
     float blueMin(int, int, int, float, float);
     float redMax(int, int, int, float, float);
     float value();
@@ -52,10 +52,13 @@ private:
     QPoint blueWhereToGo(int x, int y, int depth, float alpha, float beta);
 
 public:
-    //»ñÈ¡Ç°¶ËµÄËæ»úÊı
+    //è·å–å‰ç«¯çš„æ•°æ®
     void setBackNeed(int rand,int sente,int depth);
-    QVector<QPoint> getPointToGo();
     void setvirtueTable(const QVector<QVector<int>>& board);
+    
+    //0ï¼šè¦èµ°çš„æ£‹  1ï¼šè¦èµ°åˆ°çš„ä½ç½®
+    QVector<QPoint> getPointToGo(); 
+    
     
 
 };
