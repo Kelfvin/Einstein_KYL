@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "board.h"
+#include "logic.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -76,6 +77,8 @@ private:
     int chessY;
     int boardWidth;
     int boardHeight;
+
+    Logic logic;
 
     QMap<char,int> selectedPosition = {
         {'x',-1},

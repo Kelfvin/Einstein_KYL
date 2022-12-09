@@ -24,6 +24,7 @@ bool Board::setChess(int x, int y, int value)
     }
 
     removeFromChessMap(board[x][y]);
+
     addToChessMap(value,x,y);
 
     board[x][y] = value;
@@ -199,6 +200,16 @@ void Board::setOurColor(int color)
 void Board::setNowPlayer(int color)
 {
     nowPlayer = color;
+}
+
+const QVector<QVector<int> > &Board::getBoard()
+{
+    return board;
+}
+
+int Board::getSente()
+{
+    return sente;
 }
 
 QString Board::getNowPlayerStr()

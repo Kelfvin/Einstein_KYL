@@ -261,8 +261,13 @@ void MainWindow::on_diceButton_clicked()
     qsrand(QTime::currentTime().msec());
 
     int dice = qrand()%6+1;
+    board.setDice(dice);
+
 
 //    to-do 移动
+    logic.setBackNeed(dice,board.getSente(),searchDeep);
+    logic.setvirtueTable(board.getBoard());
+
 
     board.backup();
 

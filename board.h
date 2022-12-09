@@ -27,6 +27,8 @@ public:
     void setOurColor(int color);
     void setNowPlayer(int color);
 
+    const QVector<QVector<int>>& getBoard();
+    int getSente();
 
 
     /**
@@ -36,6 +38,12 @@ public:
     int checkWin();
 
 private:
+    /**
+     * @brief addToChessMap 将棋子的坐标更新到 ChessMap中
+     * @param value 棋子的标号
+     * @param x
+     * @param y
+     */
     void addToChessMap(int value ,int x , int y);
     void initDefaultChessSet();
     void removeFromChessMap(int value);
@@ -45,7 +53,7 @@ private:
     // 当前棋局
     QVector<QVector<int>> board;
 
-    int dice;
+    int dice; //骰子数
 
     // 保存我红方的蓝方的棋子，还有棋子的位置，0位置为x，1位置为y
     QMap<int,QMap<char,int>> redChessMap;

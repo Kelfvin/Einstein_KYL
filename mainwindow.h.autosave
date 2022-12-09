@@ -20,7 +20,7 @@ public:
 private:
     void onBoardTap(int x , int y);
     void showMsg(QString str);
-    void initSearchDeepCombBox();
+    void initSearchDeepCombBox(); 
     void initSetOurColorCombBox();
     void initSetSenteCombBox();
     void drawChessNumber(int x,int y);
@@ -77,7 +77,7 @@ private:
     int chessY;
     int boardWidth;
     int boardHeight;
-    
+
     Logic logic;
 
     QMap<char,int> selectedPosition = {
