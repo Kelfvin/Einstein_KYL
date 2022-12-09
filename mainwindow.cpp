@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QDir>
-
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -267,7 +267,6 @@ void MainWindow::on_diceButton_clicked()
 //    to-do 移动
     logic.setBackNeed(dice,board.getSente(),searchDeep);
     logic.setvirtueTable(board.getBoard());
-
 
     board.backup();
 

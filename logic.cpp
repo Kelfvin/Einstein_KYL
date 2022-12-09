@@ -40,7 +40,7 @@ Logic::Logic()
 
     virtueTable.resize(LINE);
     for (int i=0;i<LINE;i++) {
-        redprobabilityflag[i].resize(LINE);
+        virtueTable[i].resize(LINE);
     }
 
 }
@@ -1334,7 +1334,7 @@ void Logic::redReady()
 
 QVector<QPoint> Logic::getPointToGo()
 {
-    QVector<QPoint> returnData(2);
+    QVector<QPoint> returnData;
     for (int i=0;i<LINE;i++) {
         for (int j=0;j<LINE;j++) {
             if(virtueTable[i][j]==random){
@@ -1417,8 +1417,9 @@ QVector<QPoint> Logic::getPointToGo()
 
 void Logic::setvirtueTable(const QVector<QVector<int> > &board)
 {
+
     for (int i=0;i<LINE;i++) {
-        for (int j=0;j<LINE;j++) {
+        for (int j=0;j<LINE;j++) {          
             virtueTable[i][j]=board[i][j];
         }
     }
