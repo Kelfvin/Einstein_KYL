@@ -71,8 +71,7 @@ bool Board::moveChess(int startx, int starty, int endx, int endy)
         }
     }
 
-
-    backupBoards.append(QVector<QVector<int>>(board));
+    backup();
 
     int endGrid = board[endx][endy];
     if(endGrid!= 0){
@@ -85,7 +84,7 @@ bool Board::moveChess(int startx, int starty, int endx, int endy)
 
     nowPlayer = -nowPlayer;
 
-    backup();
+
     return true;
 }
 
@@ -210,6 +209,11 @@ const QVector<QVector<int> > &Board::getBoard()
 int Board::getSente()
 {
     return sente;
+}
+
+int Board::getDice()
+{
+    return dice;
 }
 
 QString Board::getNowPlayerStr()

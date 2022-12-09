@@ -61,32 +61,10 @@ void MainWindow::onBoardTap(int x, int y)
         }
         else{
 
-           bool success =  board.moveChess(selectedPosition['x'],selectedPosition['y'],x,y);
-           selectedPosition['x'] = -1;
-           selectedPosition['y'] = -1;
-           if(success){
-               int win = board.checkWin();
-               if(win== 0){
-               ui->boardStatusBar->append("现在该"+board.getNowPlayerStr()+"出手");
-               }
-
-               else if(win == 1){
-                   showMsg("蓝方赢了！");
-               }
-
-               else{
-                   showMsg("红方赢了");
-               }
-
-
-           }else{
-               showMsg("操作非法！");
-           }
+            moveChess(selectedPosition['x'],selectedPosition['y'],x,y);
         }
 
     }
-
-
 
 }
 
@@ -206,6 +184,55 @@ void MainWindow::drawBoardLine()
     }
 }
 
+void MainWindow::letAIDo()
+{
+    logic.setBackNeed(board.getDice(),board.getSente(),searchDeep);
+    logic.setvirtueTable(board.getBoard());
+    QVector<QPoint> pointsArr = logic.getPointToGo();
+    QPoint start =  pointsArr[0];
+    QPoint end = pointsArr[1];
+    qDebug() << start.x() << " " << start.y()<<" " << end.x() <<" "<< end.y();
+    moveChess(start.x(),start.y(),end.x(),end.y());
+    update();
+}
+
+void MainWindow::moveChess(int x1, int y1, int x2, int y2)
+{
+
+
+
+    bool success =  board.moveChess(x1,y1,x2,y2);
+
+
+    selectedPosition['x'] = -1;
+    selectedPosition['y'] = -1;
+    if(success){
+        char buffer[100];
+        sprintf(buffer,"移动(%d,%d)->(%d,%d)",x1,y1,x2,y2);
+        QString moveInfo = buffer;
+        ui->boardStatusBar->append(intToColor(-board.getNowPlayer())+moveInfo);
+
+        int win = board.checkWin();
+    if(win== 0){
+        ui->boardStatusBar->append("现在该"+board.getNowPlayerStr()+"出手");
+    }
+
+    else if(win == 1){
+       showMsg("蓝方赢了！");
+    }
+
+    else{
+       showMsg("红方赢了");
+    }
+
+
+    }else{
+        showMsg("操作非法！");
+    }
+
+    update();
+}
+
 QString MainWindow::intToColor(int value)
 {
     return value>0? "蓝色":"红色";
@@ -263,15 +290,16 @@ void MainWindow::on_diceButton_clicked()
     int dice = qrand()%6+1;
     board.setDice(dice);
 
-
-//    to-do 移动
-    logic.setBackNeed(dice,board.getSente(),searchDeep);
-    logic.setvirtueTable(board.getBoard());
-
-    board.backup();
-
-    QString str = "投掷出了" + QString::number(dice);
+    QString str = board.getNowPlayerStr()+"投掷出了" + QString::number(dice);
     ui->boardStatusBar->append(str);
+
+
+    // 如果是我们的轮，就让 AI 算法来走
+    if(board.getNowPlayer()==board.getOurColor()){
+        letAIDo();
+    }
+
+
 
     ui->backButton->setEnabled(true);
 }
@@ -307,8 +335,8 @@ void MainWindow::on_startMatchButton_clicked()
 
 void MainWindow::on_searchDeepCombBox_currentIndexChanged(int index)
 {
-    searchDeep = index;
-    ui->boardStatusBar->append("设置搜索深度为"+QString::number(index+1));
+    searchDeep = index+1 ;
+    ui->boardStatusBar->append("设置搜索深度为"+QString::number(searchDeep));
 }
 
 void MainWindow::on_backButton_clicked()

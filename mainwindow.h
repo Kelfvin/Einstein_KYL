@@ -27,6 +27,8 @@ private:
     void drawBoardNumber();
     void drawBoardColor();
     void drawBoardLine();
+    void letAIDo();
+    void moveChess(int x1, int y1, int x2,int y2);
 
     QString intToColor(int value);
 
@@ -53,6 +55,7 @@ private slots:
     void on_setOurColorComboBox_currentIndexChanged(int index);
 
     void on_setSenteComboBox_currentIndexChanged(int index);
+
 
 private:
     Ui::MainWindow *ui;

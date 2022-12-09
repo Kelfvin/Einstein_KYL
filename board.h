@@ -29,6 +29,7 @@ public:
 
     const QVector<QVector<int>>& getBoard();
     int getSente();
+    int getDice();
 
 
     /**
