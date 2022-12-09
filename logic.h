@@ -3,7 +3,7 @@
 
 #include <QVector>
 #include <QPoint>
-
+#include "board.h"
 class Logic
 {
 public:
@@ -50,12 +50,13 @@ private:
     void redReady();
     int judgeResult();
     QPoint blueWhereToGo(int x, int y, int depth, float alpha, float beta);
+
 public:
     //获取前端的随机数
     void setBackNeed(int rand,int sente,int depth);
-    QPoint getPointToGo();
+    QVector<QPoint> getPointToGo();
     void setvirtueTable(const QVector<QVector<int>>& board);
-
+    
 
 };
 

@@ -92,7 +92,6 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
     float val = 0;
     float temp = 0;
     int flag = 0;
-    int num = 0;
     int bestmoveX;
     int bestmoveY;
     if (x > 0 && y > 0){ //有左上方
@@ -228,7 +227,6 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
         x = x - 1;
         return QPoint(x,y);
     }
-
 
 
 }
@@ -596,7 +594,7 @@ bool Logic::specialDeal(int& x,int& y)
 void Logic::setBackNeed(int rand,int sente,int depth)
 {
     this->random=rand;
-    this->whoplay;
+    this->whoplay++;
     this->sente=sente;
     this->depth=depth;
 }
@@ -1066,7 +1064,7 @@ float Logic::value()
 
     blueReady(); //得到了蓝红双方的价值以及蓝方的个体威胁值
     for (int i = 0; i < SIZE; i++){
-        if (qAbs(blueProbability[i]-0.00) > 0.005) //棋子存在
+        if (qAbs(blueProbability[i]-0.00f) > 0.005) //棋子存在
         {
             bluedistance += blueProbability[i] * blueValue[i]; //我方进攻值
             blueThreaten+= blueProbability[i] * bluethreaten[i];
@@ -1078,7 +1076,7 @@ float Logic::value()
 
     redReady();
     for (int i = 0; i < SIZE; i++){
-        if (qAbs(redProbability[i]-0.00) > 0.005){ //棋子存在
+        if (qAbs(redProbability[i]-0.00f) > 0.005){ //棋子存在
             reddistance += redProbability[i] * redValue[i]; //红方进攻值
             redThreaten += redProbability[i] * redthreaten[i];
         }
@@ -1334,12 +1332,16 @@ void Logic::redReady()
 
 
 
-QPoint Logic::getPointToGo()
+QVector<QPoint> Logic::getPointToGo()
 {
+    QVector<QPoint> returnData(2);
     for (int i=0;i<LINE;i++) {
         for (int j=0;j<LINE;j++) {
             if(virtueTable[i][j]==random){
-                return blueWhereToGo(i,j,depth,-infinity,infinity);
+                returnData.append(QPoint(i,j));
+                QPoint point = blueWhereToGo(i,j,depth,-infinity,infinity);
+                returnData.append(point);
+                return returnData;
             }
         }
     }
@@ -1370,16 +1372,20 @@ QPoint Logic::getPointToGo()
     {
         //备份棋盘，用于悔棋
         int x = k1, y = l1;
-        return blueWhereToGo(x, y, depth, -infinity, infinity);
-
+        returnData.append(QPoint(x,y));
+        QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
+        returnData.append(point);
+        return returnData;
     }
     else if (temp1 == 0 && temp2 != 7)
     {
         //备份棋盘，用于悔棋
 
         int x = k2, y = l2;
-        return blueWhereToGo(x, y, depth, -infinity, infinity);
-
+        returnData.append(QPoint(x,y));
+        QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
+        returnData.append(point);
+        return returnData;
     }
     else
     {
@@ -1390,15 +1396,19 @@ QPoint Logic::getPointToGo()
 
             int x = k2, y = l2;
             blueWhereToGo(x, y, depth, -infinity, infinity);
-
+            returnData.append(QPoint(x,y));
+            QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
+            returnData.append(point);
+            return returnData;
         }
         else
         {
-
             //走棋
             int x = k1, y = l1;
-            return blueWhereToGo(x, y, depth, -infinity, infinity);
-
+            returnData.append(QPoint(x,y));
+            QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
+            returnData.append(point);
+            return returnData;
         }
     }
 }
