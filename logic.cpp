@@ -591,13 +591,6 @@ bool Logic::specialDeal(int& x,int& y)
     return false;
 }
 
-void Logic::setBackNeed(int rand,int sente,int depth)
-{
-    this->random=rand;
-    this->whoplay++;
-    this->sente=sente;
-    this->depth=depth;
-}
 
 float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 {
