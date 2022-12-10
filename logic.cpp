@@ -1422,4 +1422,16 @@ void Logic::setvirtueTable(const QVector<QVector<int> > &board)
     }
 }
 
+void Logic::setRand(int rand){
+    this->random=rand;
+ }//获取骰子数
+void Logic::setDepth(int depth){
+    this->depth=depth;
+}
+void Logic::setSente(int sente){
+    this->sente=sente;
+}
+void Logic::setourColor(int ourColor){
+    this->ourColor=ourColor;
+}
 
