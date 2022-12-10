@@ -211,6 +211,11 @@ int Board::getSente()
     return sente;
 }
 
+void Board::setSente(int color)
+{
+    sente = color;
+}
+
 int Board::getDice()
 {
     return dice;

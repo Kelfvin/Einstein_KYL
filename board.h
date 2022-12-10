@@ -29,7 +29,9 @@ public:
 
     const QVector<QVector<int>>& getBoard();
     int getSente();
+    void setSente(int color);
     int getDice();
+
 
 
     /**

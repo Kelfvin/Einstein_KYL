@@ -186,7 +186,6 @@ void MainWindow::drawBoardLine()
 
 void MainWindow::letAIDo()
 {
-    logic.setBackNeed(board.getDice(),board.getSente(),searchDeep);
     logic.setvirtueTable(board.getBoard());
     QVector<QPoint> pointsArr = logic.getPointToGo();
     QPoint start =  pointsArr[0];
@@ -314,6 +313,7 @@ void MainWindow::on_startMatchButton_clicked()
         QMessageBox msgBox;
         msgBox.setText("比赛开始！");
         msgBox.exec();
+        board.setNowPlayer(board.getSente());
 
         ui->boardStatusBar->append("现在是"+board.getNowPlayerStr()+"出手");
 
@@ -336,6 +336,7 @@ void MainWindow::on_startMatchButton_clicked()
 void MainWindow::on_searchDeepCombBox_currentIndexChanged(int index)
 {
     searchDeep = index+1 ;
+    logic.setDepth(searchDeep);
     ui->boardStatusBar->append("设置搜索深度为"+QString::number(searchDeep));
 }
 
@@ -364,14 +365,15 @@ void MainWindow::on_setOurColorComboBox_currentIndexChanged(int index)
 {
     int color = index == 0? 1:-1;
     board.setOurColor(color);
+    logic.setourColor(board.getOurColor());
     ui->boardStatusBar->append("设置我方队伍颜色为"+intToColor(color));
 }
 
 void MainWindow::on_setSenteComboBox_currentIndexChanged(int index)
 {
      int color = index == 0? 1:-1;
-     board.setNowPlayer(color);
+     board.setSente(color);
+     logic.setSente(board.getSente());
+
      ui->boardStatusBar->append("设置先手颜色为"+intToColor(color));
-
-
 }
