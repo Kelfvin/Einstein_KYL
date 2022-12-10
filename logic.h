@@ -28,7 +28,7 @@ private:
     int whoplay;
     int sente=1;
     int depth;
-    int ourColor;
+    int direction;
 
     const int k1=20; //需要的k1系数
     const int k2=-16; //需要的k2系数````
@@ -68,4 +68,6 @@ public:
 };
 
 #endif // LOGIC_H
+
+
 
