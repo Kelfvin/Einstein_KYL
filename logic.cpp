@@ -1399,14 +1399,14 @@ QVector<QPoint> Logic::getPointToGo()
 void Logic::setvirtueTable(const QVector<QVector<int> > &board)
 {
     
-    if(ourColor==-1){
+   if(ourColor==1){
     for (int i=0;i<LINE;i++) {
         for (int j=0;j<LINE;j++) {          
             virtueTable[i][j]=board[i][j];
         }
     }
    }
-    else if (ourColor==1) {
+    else if (ourColor==-1) {
         for (int i=0;i<LINE;i++) {
             for (int j=0;j<LINE;j++) {          
                 virtueTable[i][j]=-board[i][j];
