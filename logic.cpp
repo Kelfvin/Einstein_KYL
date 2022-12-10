@@ -15,9 +15,9 @@ Logic::Logic()
     };
     blueValueChart={
         {32,20,10,5,2},
-        {20,12,12,12,2},
-        {10,12,8,8,2},
-        {5,12,8,4,2},
+        {20,16,8,4,2},
+        {10,8,8,4,2},
+        {5,4,4,4,2},
         {2,2,2,2,1},
     };
 
@@ -88,20 +88,20 @@ int Logic::judgeResult()
 QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
 {
 
-    int a1 = 0; //aÓÃÓÚ±£´æÈı¸ö·½ÏòµÄÆåÖµ
+    int a1 = 0; //aç”¨äºä¿å­˜ä¸‰ä¸ªæ–¹å‘çš„æ£‹å€¼
     float val = 0;
     float temp = 0;
     int flag = 0;
     int bestmoveX;
     int bestmoveY;
-    if (x > 0 && y > 0){ //ÓĞ×óÉÏ·½
+    if (x > 0 && y > 0){ //æœ‰å·¦ä¸Šæ–¹
         if (specialDeal(x,y)) {
             return QPoint(x,y);
         }
         a1 = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×óÉÏµã¼ÛÖµ
+        //è®¡ç®—å·¦ä¸Šç‚¹ä»·å€¼
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
@@ -114,7 +114,7 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
                 }
 
         qDebug() << val;
-        //×îÓÅÆå²½£¬É±µÃ¶Ô·½Ò»¸öÒ²Ã»ÓĞÁË
+        //æœ€ä¼˜æ£‹æ­¥ï¼Œæ€å¾—å¯¹æ–¹ä¸€ä¸ªä¹Ÿæ²¡æœ‰äº†
         bestmoveX = x - 1;
         bestmoveY = y - 1;
         if (flag == 0)
@@ -126,17 +126,17 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             return QPoint(x,y);
         }
         flag = 0;
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = a1;
-        //À¶Æå×ß×óÉÏ--------------------------------------------------------
+        //è“æ£‹èµ°å·¦ä¸Š--------------------------------------------------------
 
 
-        //À¶Æå×ß×ó±ß--------------------------------------------------------
+        //è“æ£‹èµ°å·¦è¾¹--------------------------------------------------------
         a1 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×ó±ß¼ÛÖµ
+        //è®¡ç®—å·¦è¾¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -147,7 +147,7 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
                     flag++;
                 }
         qDebug() << temp;
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (flag == 0)
         {
             bestmoveX = x - 1;
@@ -164,17 +164,17 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             bestmoveY = y;
         }
         temp = 0;
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a1;
-        //À¶Æå×ß×ó±ß--------------------------------------------------------
+        //è“æ£‹èµ°å·¦è¾¹--------------------------------------------------------
 
 
-        //À¶Æå×ßÉÏ·½--------------------------------------------------------
+        //è“æ£‹èµ°ä¸Šæ–¹--------------------------------------------------------
         a1 = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÉÏ·½¼ÛÖµ
+        //è®¡ç®—ä¸Šæ–¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -194,34 +194,34 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             return QPoint(x,y);
         }
         flag = 0;
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (temp < val)
         {
             val = temp;
             bestmoveX = x;
             bestmoveY = y - 1;
         }
-        //À¶Æå×ßÉÏ·½--------------------------------------------------------
+        //è“æ£‹èµ°ä¸Šæ–¹--------------------------------------------------------
 
 
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = a1;
-        //×îÖÕ×îÓÅÆå²½
+        //æœ€ç»ˆæœ€ä¼˜æ£‹æ­¥
         //qDebug()<<num1;
-        /********½øĞĞÒÆ¶¯*********/
+        /********è¿›è¡Œç§»åŠ¨*********/
         x = bestmoveX;
         y = bestmoveY;
         return QPoint(x,y);
-        /********½øĞĞÒÆ¶¯*********/
+        /********è¿›è¡Œç§»åŠ¨*********/
     }
-    else if (x == 0) //×ó±ßÎªÇ½£¬ÓÃ²»×Å¹ÀÖµ£¬ÒòÎªÖ»ÄÜ×ß°¡
+    else if (x == 0) //å·¦è¾¹ä¸ºå¢™ï¼Œç”¨ä¸ç€ä¼°å€¼ï¼Œå› ä¸ºåªèƒ½èµ°å•Š
     {
         //qDebug()<<"BlueWhereToGo "<<depth<<":1";
         y = y - 1;
         return QPoint(x,y);
     }
-    else if (y == 0) //ÉÏ·½ÎªÇ½£¬ÓÃ²»×Å¹ÀÖµ£¬ÒòÎªÖ»ÄÜ×ß°¡
+    else if (y == 0) //ä¸Šæ–¹ä¸ºå¢™ï¼Œç”¨ä¸ç€ä¼°å€¼ï¼Œå› ä¸ºåªèƒ½èµ°å•Š
     {
         //qDebug()<<"BlueWhereToGo "<<depth<<":1";
         x = x - 1;
@@ -235,11 +235,11 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
 
 bool Logic::specialDeal(int& x,int& y)
 {
-    //0731 ¸±¶Ô½ÇÏßÈ¡Ïûµô
+    //0731 å‰¯å¯¹è§’çº¿å–æ¶ˆæ‰
     int num1 = 0;
     int bestmoveX;
     int bestmoveY;
-    if (x > 0 && y > 0) //ÓĞ×óÉÏ·½
+    if (x > 0 && y > 0) //æœ‰å·¦ä¸Šæ–¹
     {
 
         int n = LINE, j = 0, m = 0;
@@ -303,7 +303,7 @@ bool Logic::specialDeal(int& x,int& y)
             }
         }
 
-        //0801¶¨Ê½´¦Àí
+        //0801å®šå¼å¤„ç†
         if (whoplay >= 10)
         {
             int x1 = (x - 1);
@@ -367,7 +367,7 @@ bool Logic::specialDeal(int& x,int& y)
                 }
             }
 
-            //0801¶¨Ê½´¦Àí
+            //0801å®šå¼å¤„ç†
             if (x == 3 && y == 2)
             {
                 if (virtueTable[x - 1][y - 1] < 0)
@@ -418,7 +418,7 @@ bool Logic::specialDeal(int& x,int& y)
             }
         }
 
-        //0731 ¸±¶Ô½ÇÏßÈ¡Ïûµô¶¨Ê½´¦Àí
+        //0731 å‰¯å¯¹è§’çº¿å–æ¶ˆæ‰å®šå¼å¤„ç†
         if (whoplay <= 10 && num1 == 1 && ((x == 2 && y == 3) || (x == 2 && y == 4) || (x == 3 && y == 2) || (x == 4 && y == 2) || (x == 3 && y == 3)))
         {
             if (virtueTable[x - 1][y] < 0)
@@ -467,7 +467,7 @@ bool Logic::specialDeal(int& x,int& y)
               }
           }
       }*/
-        //0801 ¶¨Ê½´¦Àí
+        //0801 å®šå¼å¤„ç†
         if (num1 == 0 && ((x == 2 && y == 4) || (x == 4 && y == 2)))
         {
             bestmoveX = x - 1;
@@ -602,8 +602,8 @@ void Logic::setBackNeed(int rand,int sente,int depth)
 float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 {
 
-    //Ê¤¸ºÒÑ¶¨
-    //ÅĞ¶ÏÊäÓ®´òÓ¡ĞÅÏ¢
+    //èƒœè´Ÿå·²å®š
+    //åˆ¤æ–­è¾“èµ¢æ‰“å°ä¿¡æ¯
     if (judgeResult() == 1)
     {
         return -infinity;
@@ -618,23 +618,23 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 
     if (depth == 0)
     {
-        if (x > 0 && y > 0) //ÓĞ×óÉÏ·½
+        if (x > 0 && y > 0) //æœ‰å·¦ä¸Šæ–¹
         {
-            //±éÀúÈı¸ö·½ÏòÑ°Çóvalue()×î´óÖµ
+            //éå†ä¸‰ä¸ªæ–¹å‘å¯»æ±‚value()æœ€å¤§å€¼
             //qDebug()<<"BlueMin "<<depth<<":3";
-            //×óÉÏ
+            //å·¦ä¸Š
             a2 = virtueTable[x - 1][y - 1];
             virtueTable[x - 1][y - 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
             val = value();
             virtueTable[x][y] = virtueTable[x - 1][y - 1];
             virtueTable[x - 1][y - 1] = a2;
-            //Alpha¼ôÖ¦
+            //Alphaå‰ªæ
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
 
-            //×ó±ß
+            //å·¦è¾¹
             a2 = virtueTable[x - 1][y];
             virtueTable[x - 1][y] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -645,12 +645,12 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x - 1][y] = a2;
-            //Alpha¼ôÖ¦
+            //Alphaå‰ªæ
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
 
-            //ÉÏ·½
+            //ä¸Šæ–¹
             a2 = virtueTable[x][y - 1];
             virtueTable[x][y - 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -661,7 +661,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x][y - 1] = a2;
-            //Alpha¼ôÖ¦
+            //Alphaå‰ªæ
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
@@ -689,15 +689,15 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
         return val;
     }
 
-    if (x > 0 && y > 0) //ÓĞ×óÉÏ·½
+    if (x > 0 && y > 0) //æœ‰å·¦ä¸Šæ–¹
     {
-        //±éÀúÈı¸ö·½ÏòÑ°Çóvalue()×î´óÖµ
+        //éå†ä¸‰ä¸ªæ–¹å‘å¯»æ±‚value()æœ€å¤§å€¼
         //qDebug()<<"BlueqMin "<<depth<<":3";
-        //À¶Æå×ß×óÉÏ--------------------------------------------------------
+        //è“æ£‹èµ°å·¦ä¸Š--------------------------------------------------------
         a2 = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×óÉÏµã¼ÛÖµ
+        //è®¡ç®—å·¦ä¸Šç‚¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -706,19 +706,19 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     val += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = a2;
-        //Alpha¼ôÖ¦
+        //Alphaå‰ªæ
         beta = qMin(beta, val);
         if (beta <= alpha)
             return beta;
 
-        //À¶Æå×ß×ó±ß--------------------------------------------------------
+        //è“æ£‹èµ°å·¦è¾¹--------------------------------------------------------
         a2 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×ó±ß¼ÛÖµ
+        //è®¡ç®—å·¦è¾¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -727,25 +727,25 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     temp += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (temp < val)
         {
             val = temp;
         }
         temp = 0;
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a2;
-        //Alpha¼ôÖ¦
+        //Alphaå‰ªæ
         beta = qMin(beta, val);
         if (beta <= alpha)
             return beta;
 
-        //À¶Æå×ßÉÏ·½--------------------------------------------------------
+        //è“æ£‹èµ°ä¸Šæ–¹--------------------------------------------------------
         a2 = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÉÏ·½¼ÛÖµ
+        //è®¡ç®—ä¸Šæ–¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -754,15 +754,15 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     temp += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (temp < val)
         {
             val = temp;
         }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = a2;
-        //Alpha¼ôÖ¦
+        //Alphaå‰ªæ
         beta = qMin(beta, val);
         if (beta <= alpha)
             return beta;
@@ -770,11 +770,11 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
     else if (x == 0)
     {
         //qDebug()<<"BlueqMin "<<depth<<":1";
-        //À¶Æå×ßÉÏ·½--------------------------------------------------------
+        //è“æ£‹èµ°ä¸Šæ–¹--------------------------------------------------------
         a2 = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÉÏ·½¼ÛÖµ
+        //è®¡ç®—ä¸Šæ–¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -783,18 +783,18 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     val += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = a2;
     }
     else if (y == 0)
     {
         //qDebug()<<"BlueqMin "<<depth<<":1";
-        //À¶Æå×ß×ó±ß--------------------------------------------------------
+        //è“æ£‹èµ°å·¦è¾¹--------------------------------------------------------
         a2 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×ó±ß¼ÛÖµ
+        //è®¡ç®—å·¦è¾¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -803,7 +803,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     val += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a2;
     }
@@ -821,8 +821,8 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
         return infinity;
     }
 
-    //Ê¤¸ºÒÑ¶¨
-    //ÅĞ¶ÏÊäÓ®´òÓ¡ĞÅÏ¢
+    //èƒœè´Ÿå·²å®š
+    //åˆ¤æ–­è¾“èµ¢æ‰“å°ä¿¡æ¯
     if (judgeResult() == 1)
     {
         return -infinity;
@@ -835,36 +835,36 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
     int a;
     float val = 0, temp = 0;
 
-    if (depth == 0) //ÒÑ¾­´ïµ½×îÉî¶È
+    if (depth == 0) //å·²ç»è¾¾åˆ°æœ€æ·±åº¦
     {
-        if (x < 4 && y < 4) //ÓĞÓÒÏÂ·½,ÕâÑù
+        if (x < 4 && y < 4) //æœ‰å³ä¸‹æ–¹,è¿™æ ·
         {
-            //±éÀúÈı¸ö·½ÏòÑ°Çóvalue()×î´óÖµ
+            //éå†ä¸‰ä¸ªæ–¹å‘å¯»æ±‚value()æœ€å¤§å€¼
             //qDebug()<<"RedMax "<<depth<<":3";
 
 
-            /*****************ÓÒÏÂ**************/
+            /*****************å³ä¸‹**************/
 
-            /*********ÏÈÄ£Äâ×ßÒ»²½*******/
+            /*********å…ˆæ¨¡æ‹Ÿèµ°ä¸€æ­¥*******/
             a = virtueTable[x + 1][y + 1];
             virtueTable[x + 1][y + 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
-            val = value();  //¼ÆËãµ±Ç°µÄ¹ÀÖµº¯Êı
-            /*********ÏÈÄ£Äâ×ßÒ»²½*******/
+            val = value();  //è®¡ç®—å½“å‰çš„ä¼°å€¼å‡½æ•°
+            /*********å…ˆæ¨¡æ‹Ÿèµ°ä¸€æ­¥*******/
 
-            /******³·³öÄ£Äâ×´Ì¬*******/
+            /******æ’¤å‡ºæ¨¡æ‹ŸçŠ¶æ€*******/
             virtueTable[x][y] = virtueTable[x + 1][y + 1];
             virtueTable[x + 1][y + 1] = a;
-            /******³·³öÄ£Äâ×´Ì¬*******/
-            //Beta¼ôÖ¦
+            /******æ’¤å‡ºæ¨¡æ‹ŸçŠ¶æ€*******/
+            //Betaå‰ªæ
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
 
-            /*****************ÓÒÏÂ**************/
+            /*****************å³ä¸‹**************/
 
 
-            /*****************ÓÒ***************/
+            /*****************å³***************/
             a = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -875,14 +875,14 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x + 1][y] = a;
-            //Beta¼ôÖ¦
+            //Betaå‰ªæ
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
-            /*****************ÓÒ***************/
+            /*****************å³***************/
 
 
-            /****************ÏÂ***************/
+            /****************ä¸‹***************/
             a = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -893,15 +893,15 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x][y + 1] = a;
-            //Beta¼ôÖ¦
+            //Betaå‰ªæ
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
-            /****************ÏÂ***************/
+            /****************ä¸‹***************/
         }
         else if (x == 4)
         {
-            /****************ÏÂ***************/
+            /****************ä¸‹***************/
             //qDebug()<<"RedMax "<<depth<<":1";
             a = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = virtueTable[x][y];
@@ -909,11 +909,11 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
             val = value();
             virtueTable[x][y] = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = a;
-            /****************ÏÂ***************/
+            /****************ä¸‹***************/
         }
         else if (y == 4)
         {
-            /***********ÓÒ*****************/
+            /***********å³*****************/
             //qDebug()<<"RedMax "<<depth<<":1";
             a = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = virtueTable[x][y];
@@ -921,47 +921,47 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
             val = value();
             virtueTable[x][y] = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = a;
-            /***********ÓÒ*****************/
+            /***********å³*****************/
         }
-        return val; //ÒòÎªµ½±ß½çÉÏÖ»ÓĞÒ»ÌõÂ·¿É×ß£¬ËùÒÔËµÖ±½Ó·µ»Øval
+        return val; //å› ä¸ºåˆ°è¾¹ç•Œä¸Šåªæœ‰ä¸€æ¡è·¯å¯èµ°ï¼Œæ‰€ä»¥è¯´ç›´æ¥è¿”å›val
     }
 
 
 
-    //»¹Ã»ÓĞ´ïµ½×îÉî¶È
+    //è¿˜æ²¡æœ‰è¾¾åˆ°æœ€æ·±åº¦
 
-    //»¹Ã»ÓĞ´ïµ½×îÉî¶È
-    if (x < 4 && y < 4) //ÓĞÓÒÏÂ·½
+    //è¿˜æ²¡æœ‰è¾¾åˆ°æœ€æ·±åº¦
+    if (x < 4 && y < 4) //æœ‰å³ä¸‹æ–¹
     {
-        //±éÀúÈı¸ö·½ÏòÑ°Çóvalue()×î´óÖµ
+        //éå†ä¸‰ä¸ªæ–¹å‘å¯»æ±‚value()æœ€å¤§å€¼
         //qDebug()<<"RedMax "<<depth<<":3";
-        //ºìÆå×ßÓÒÏÂ--------------------------------------------------------
+        //çº¢æ£‹èµ°å³ä¸‹--------------------------------------------------------
         a = virtueTable[x + 1][y + 1];
         virtueTable[x + 1][y + 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÓÒÏÂµã¼ÛÖµ
+        //è®¡ç®—å³ä¸‹ç‚¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
                 {
-                    blueReady(); //»ñÈ¡blueprobability,²¢Ä£Äâ¸Ä±äµÄÆåÅÌ
+                    blueReady(); //è·å–blueprobability,å¹¶æ¨¡æ‹Ÿæ”¹å˜çš„æ£‹ç›˜
                     val += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, depth - 1, alpha, beta);
                 }
 
 
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x + 1][y + 1];
         virtueTable[x + 1][y + 1] = a;
-        //Beta¼ôÖ¦
+        //Betaå‰ªæ
         alpha = qMax(alpha, val);
         if (beta <= alpha)
             return alpha;
 
-        //ºìÆå×ßÓÒ±ß--------------------------------------------------------
+        //çº¢æ£‹èµ°å³è¾¹--------------------------------------------------------
         a = virtueTable[x + 1][y];
         virtueTable[x + 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×ó±ß¼ÛÖµ
+        //è®¡ç®—å·¦è¾¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
@@ -970,25 +970,25 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                     //RedProbability ();
                     temp += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (temp > val)
         {
             val = temp;
         }
         temp = 0;
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x + 1][y];
         virtueTable[x + 1][y] = a;
-        //Beta¼ôÖ¦
+        //Betaå‰ªæ
         alpha = qMax(alpha, val);
         if (beta <= alpha)
             return alpha;
 
-        //ºìÆå×ßÏÂ·½--------------------------------------------------------
+        //çº¢æ£‹èµ°ä¸‹æ–¹--------------------------------------------------------
         a = virtueTable[x][y + 1];
         virtueTable[x][y + 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÉÏ·½¼ÛÖµ
+        //è®¡ç®—ä¸Šæ–¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
@@ -997,15 +997,15 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                     //RedProbability ();
                     temp += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //×îÓÅÆå²½
+        //æœ€ä¼˜æ£‹æ­¥
         if (temp > val)
         {
             val = temp;
         }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x][y + 1];
         virtueTable[x][y + 1] = a;
-        //Beta¼ôÖ¦
+        //Betaå‰ªæ
         alpha = qMax(alpha, val);
         if (beta <= alpha)
             return alpha;
@@ -1013,11 +1013,11 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
     else if (x == 4)
     {
         //qDebug()<<"RedMax "<<depth<<":1";
-        //ºìÆå×ßÏÂ·½--------------------------------------------------------
+        //çº¢æ£‹èµ°ä¸‹æ–¹--------------------------------------------------------
         a = virtueTable[x][y + 1];
         virtueTable[x][y + 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËãÉÏ·½¼ÛÖµ
+        //è®¡ç®—ä¸Šæ–¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
@@ -1026,18 +1026,18 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                     //RedProbability ();
                     val += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x][y + 1];
         virtueTable[x][y + 1] = a;
     }
     else if (y == 4)
     {
         //qDebug()<<"RedMax "<<depth<<":3";
-        //ºìÆå×ßÓÒ±ß--------------------------------------------------------
+        //çº¢æ£‹èµ°å³è¾¹--------------------------------------------------------
         a = virtueTable[x + 1][y];
         virtueTable[x + 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //¼ÆËã×ó±ß¼ÛÖµ
+        //è®¡ç®—å·¦è¾¹ä»·å€¼
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
@@ -1046,7 +1046,7 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                     //RedProbability ();
                     val += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //»Ö¸´ÆåÅÌ
+        //æ¢å¤æ£‹ç›˜
         virtueTable[x][y] = virtueTable[x + 1][y];
         virtueTable[x + 1][y] = a;
     }
@@ -1062,26 +1062,26 @@ float Logic::value()
     float redThreaten = 0;
     float val = 0;
 
-    blueReady(); //µÃµ½ÁËÀ¶ºìË«·½µÄ¼ÛÖµÒÔ¼°À¶·½µÄ¸öÌåÍşĞ²Öµ
+    blueReady(); //å¾—åˆ°äº†è“çº¢åŒæ–¹çš„ä»·å€¼ä»¥åŠè“æ–¹çš„ä¸ªä½“å¨èƒå€¼
     for (int i = 0; i < SIZE; i++){
-        if (qAbs(blueProbability[i]-0.00f) > 0.005) //Æå×Ó´æÔÚ
+        if (qAbs(blueProbability[i]-0.00f) > 0.005) //æ£‹å­å­˜åœ¨
         {
-            bluedistance += blueProbability[i] * blueValue[i]; //ÎÒ·½½ø¹¥Öµ
+            bluedistance += blueProbability[i] * blueValue[i]; //æˆ‘æ–¹è¿›æ”»å€¼
             blueThreaten+= blueProbability[i] * bluethreaten[i];
         }
     }
-    // À¶·½µÄÍşĞ²Öµ
+    // è“æ–¹çš„å¨èƒå€¼
 
 
 
     redReady();
     for (int i = 0; i < SIZE; i++){
-        if (qAbs(redProbability[i]-0.00f) > 0.005){ //Æå×Ó´æÔÚ
-            reddistance += redProbability[i] * redValue[i]; //ºì·½½ø¹¥Öµ
+        if (qAbs(redProbability[i]-0.00f) > 0.005){ //æ£‹å­å­˜åœ¨
+            reddistance += redProbability[i] * redValue[i]; //çº¢æ–¹è¿›æ”»å€¼
             redThreaten += redProbability[i] * redthreaten[i];
         }
     }
-    //ºì·½µÄÍşĞ²Öµ
+    //çº¢æ–¹çš„å¨èƒå€¼
 
     val = (k1 * reddistance + k2 * bluedistance + k3 * blueThreaten + k4 * redThreaten); /**/
 
@@ -1170,7 +1170,7 @@ void Logic::blueReady()
         }
     }
 
-    int distancerate = 0; //ÓÅÏÈ¼¶
+    int distancerate = 0; //ä¼˜å…ˆçº§
     for (int i = 0; i < 5; i++)
     {
         for (int k = 0; k <= i; k++)
@@ -1191,19 +1191,19 @@ void Logic::blueReady()
             while (num > 0 && blueprobabilityflag[--num][0] == false && blueprobabilityflag[num][1] == false)
             {
                 sum++;
-                blueprobabilityflag[num][1] = true; //¸ÅÂÊ±êÖ¾Î»ÖÃ1±íÊ¾ÒÑ¾­¼ÆËã¹ı¸ÅÂÊÁË
+                blueprobabilityflag[num][1] = true; //æ¦‚ç‡æ ‡å¿—ä½ç½®1è¡¨ç¤ºå·²ç»è®¡ç®—è¿‡æ¦‚ç‡äº†
             }
             num = bluedistancerate[i] - 1;
             while (num < 5 && blueprobabilityflag[++num][0] == false && blueprobabilityflag[num][1] == false)
             {
                 sum++;
-                blueprobabilityflag[num][1] = true; //¸ÅÂÊ±êÖ¾Î»ÖÃ1±íÊ¾ÒÑ¾­¼ÆËã¹ı¸ÅÂÊÁË
+                blueprobabilityflag[num][1] = true; //æ¦‚ç‡æ ‡å¿—ä½ç½®1è¡¨ç¤ºå·²ç»è®¡ç®—è¿‡æ¦‚ç‡äº†
             }
             num = bluedistancerate[i] - 1;
-            sum++;                           //¼ÓÉÏ×ÔÉíµÄ¸ÅÂÊ
-            blueprobabilityflag[num][1] = true; //×ÔÉí±êÖ¾Î»ÖÃ1
+            sum++;                           //åŠ ä¸Šè‡ªèº«çš„æ¦‚ç‡
+            blueprobabilityflag[num][1] = true; //è‡ªèº«æ ‡å¿—ä½ç½®1
 
-            blueProbability[num] = sum / 6.0f; //´æ´¢¸ÅÂÊ
+            blueProbability[num] = sum / 6.0f; //å­˜å‚¨æ¦‚ç‡
             sum = 0;
         }
     }
@@ -1287,7 +1287,7 @@ void Logic::redReady()
         }
     }
 
-    int distancerate = 0; //ÓÅÏÈ¼¶
+    int distancerate = 0; //ä¼˜å…ˆçº§
     for (int i = LINE-1; i >= 0; i--){
         for (int k = LINE-1; k >= i; k--){
             if (virtueTable[i][k] < 0){
@@ -1303,26 +1303,26 @@ void Logic::redReady()
 
 
     int num=0, sum = 0;
-    for (int i = 0; i < SIZE; i++) {//6¸öÆå×ÓÒÀÕÕÓÅÏÈ¼¶Õ¼Áì¸ÅÂÊ
+    for (int i = 0; i < SIZE; i++) {//6ä¸ªæ£‹å­ä¾ç…§ä¼˜å…ˆçº§å é¢†æ¦‚ç‡
         if (reddistancerate[i] < 0)
         {
             num = -reddistancerate[i] - 1;
             while (num > 0 && redprobabilityflag[--num][0] == false && redprobabilityflag[num][1] == false)
             {
                 sum++;
-                redprobabilityflag[num][1] = true; //¸ÅÂÊ±êÖ¾Î»ÖÃ1±íÊ¾ÒÑ¾­¼ÆËã¹ı¸ÅÂÊÁË
+                redprobabilityflag[num][1] = true; //æ¦‚ç‡æ ‡å¿—ä½ç½®1è¡¨ç¤ºå·²ç»è®¡ç®—è¿‡æ¦‚ç‡äº†
             }
             num = -reddistancerate[i] - 1;
             while (num < LINE && redprobabilityflag[++num][0] == false && redprobabilityflag[num][1] == false)
             {
                 sum++;
-                redprobabilityflag[num][1] = true; //¸ÅÂÊ±êÖ¾Î»ÖÃ1±íÊ¾ÒÑ¾­¼ÆËã¹ı¸ÅÂÊÁË
+                redprobabilityflag[num][1] = true; //æ¦‚ç‡æ ‡å¿—ä½ç½®1è¡¨ç¤ºå·²ç»è®¡ç®—è¿‡æ¦‚ç‡äº†
             }
             num = -reddistancerate[i] - 1;
-            sum++;                          //¼ÓÉÏ×ÔÉíµÄ¸ÅÂÊ
-            redprobabilityflag[num][1] = true; //×ÔÉí±êÖ¾Î»ÖÃ1
+            sum++;                          //åŠ ä¸Šè‡ªèº«çš„æ¦‚ç‡
+            redprobabilityflag[num][1] = true; //è‡ªèº«æ ‡å¿—ä½ç½®1
 
-            redProbability[num] = sum / 6.0f; //´æ´¢¸ÅÂÊ
+            redProbability[num] = sum / 6.0f; //å­˜å‚¨æ¦‚ç‡
             sum = 0;
         }
     }
@@ -1334,26 +1334,25 @@ void Logic::redReady()
 
 QVector<QPoint> Logic::getPointToGo()
 {
-    QVector<QPoint> returnData;
+    QVector<QPoint> returnData(2);
     for (int i=0;i<LINE;i++) {
         for (int j=0;j<LINE;j++) {
             if(virtueTable[i][j]==random){
-                returnData.append(QPoint(i,j));
-                QPoint point = blueWhereToGo(i,j,depth,-infinity,infinity);
-                returnData.append(point);
+                returnData[0] = QPoint(i,j);
+                returnData[1] = blueWhereToGo(i,j,depth,-infinity,infinity);
                 return returnData;
             }
         }
     }
-    int temp1 = 0; //ÓÃÓÚ±£´æĞ¡ÓÚrandnumÇÒ×î½Ó½üµÄ
-    int temp2 = 7; //ÓÃÓÚ±£´æ´óÓÚrandnumÇÒ×î½Ó½üµÄ
+    int temp1 = 0; //ç”¨äºä¿å­˜å°äºrandnumä¸”æœ€æ¥è¿‘çš„
+    int temp2 = 7; //ç”¨äºä¿å­˜å¤§äºrandnumä¸”æœ€æ¥è¿‘çš„
     int k1, l1;
     int k2, l2;
 
     for (int k = 0; k < 5; ++k){
         for (int l = 0; l < 5; ++l)
         {
-            if (virtueTable[k][l] > temp1 && virtueTable[k][l] < random) //Ğ¡ÓÚrandnumÇÒ×î½Ó½üµÄ
+            if (virtueTable[k][l] > temp1 && virtueTable[k][l] < random) //å°äºrandnumä¸”æœ€æ¥è¿‘çš„
             {
                 temp1 = virtueTable[k][l];
                 k1 = k;
@@ -1370,44 +1369,33 @@ QVector<QPoint> Logic::getPointToGo()
 
     if (temp1 != 0 && temp2 == 7)
     {
-        //±¸·İÆåÅÌ£¬ÓÃÓÚ»ÚÆå
-        int x = k1, y = l1;
-        returnData.append(QPoint(x,y));
-        QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
-        returnData.append(point);
+        //å¤‡ä»½æ£‹ç›˜ï¼Œç”¨äºæ‚”æ£‹
+        returnData[0] = QPoint(k1,l1);
+        returnData[1] = blueWhereToGo(k1,l1,depth,-infinity,infinity);
         return returnData;
     }
     else if (temp1 == 0 && temp2 != 7)
     {
-        //±¸·İÆåÅÌ£¬ÓÃÓÚ»ÚÆå
-
-        int x = k2, y = l2;
-        returnData.append(QPoint(x,y));
-        QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
-        returnData.append(point);
+        //å¤‡ä»½æ£‹ç›˜ï¼Œç”¨äºæ‚”æ£‹
+        returnData[0] = QPoint(k2,l2);
+        returnData[1] = blueWhereToGo(k2,l2,depth,-infinity,infinity);
         return returnData;
     }
     else
     {
         float value1 = blueMin(k1, l1, depth, -infinity, infinity);
         float value2 = blueMin(k2, l2, depth, -infinity, infinity);
-        if (value1 > value2) //¸Ã×ßk2,l2¶ÔÓ¦µÄÆå×Ó
+        if (value1 > value2) //è¯¥èµ°k2,l2å¯¹åº”çš„æ£‹å­
         {
-
-            int x = k2, y = l2;
-            blueWhereToGo(x, y, depth, -infinity, infinity);
-            returnData.append(QPoint(x,y));
-            QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
-            returnData.append(point);
+            returnData[0] = QPoint(k2,l2);
+            returnData[1] = blueWhereToGo(k2,l2,depth,-infinity,infinity);
             return returnData;
         }
         else
         {
-            //×ßÆå
-            int x = k1, y = l1;
-            returnData.append(QPoint(x,y));
-            QPoint point = blueWhereToGo(x,y,depth,-infinity,infinity);
-            returnData.append(point);
+            //èµ°æ£‹
+            returnData[0] = QPoint(k1,l1);
+            returnData[1] = blueWhereToGo(k1,l1,depth,-infinity,infinity);
             return returnData;
         }
     }
@@ -1417,11 +1405,21 @@ QVector<QPoint> Logic::getPointToGo()
 
 void Logic::setvirtueTable(const QVector<QVector<int> > &board)
 {
-
+    
+    if(ourColor==-1){
     for (int i=0;i<LINE;i++) {
         for (int j=0;j<LINE;j++) {          
             virtueTable[i][j]=board[i][j];
         }
     }
+   }
+    else if (ourColor==1) {
+        for (int i=0;i<LINE;i++) {
+            for (int j=0;j<LINE;j++) {          
+                virtueTable[i][j]=-board[i][j];
+            }
+        }
+    }
 }
+
 
