@@ -57,7 +57,7 @@ public:
     void setRand(int rand); //获取骰子数
     void setDepth(int depth); //获取深度
     void setSente(int sente); //获取先手值
-    void setourColor(int nowPlayer); //获得我们队伍的颜色
+    void setourColor(int ourColor); //获得我们队伍的颜色
     void setvirtueTable(const QVector<QVector<int>>& board); //获得棋盘情况
     
     //0：要走的棋  1：要走到的位置
