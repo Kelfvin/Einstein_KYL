@@ -29,10 +29,10 @@ private:
     int sente=1;
     int depth;
 
-    const float k1=1.0; //需要的k1系数
+    const float k1=1.0f; //需要的k1系数
     const float k2=-2.3f; //需要的k2系数````
     const float k3=-0.1f; //需要的k3系数
-    const float k4=0.0; //需要的k4系数
+    const float k4=0.0f; //需要的k4系数
     const int infinity=128;
     const int SIZE=6;
     const int LINE=5;
