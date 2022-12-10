@@ -28,11 +28,12 @@ private:
     int whoplay;
     int sente=1;
     int depth;
+    int ourColor;
 
-    const float k1=1.0f; //需要的k1系数
-    const float k2=-2.3f; //需要的k2系数````
-    const float k3=-0.1f; //需要的k3系数
-    const float k4=0.0f; //需要的k4系数
+    const int k1=20; //需要的k1系数
+    const int k2=-16; //需要的k2系数````
+    const int k3=-12; //需要的k3系数
+    const int k4=10; //需要的k4系数
     const int infinity=128;
     const int SIZE=6;
     const int LINE=5;
@@ -53,8 +54,11 @@ private:
 
 public:
     //获取前端的数据
-    void setBackNeed(int rand,int sente,int depth);
-    void setvirtueTable(const QVector<QVector<int>>& board);
+    void setRand(int rand); //获取骰子数
+    void setDepth(int depth); //获取深度
+    void setSente(int sente); //获取先手值
+    void setourColor(int nowPlayer); //获得我们队伍的颜色
+    void setvirtueTable(const QVector<QVector<int>>& board); //获得棋盘情况
     
     //0：要走的棋  1：要走到的位置
     QVector<QPoint> getPointToGo(); 
@@ -64,3 +68,4 @@ public:
 };
 
 #endif // LOGIC_H
+
