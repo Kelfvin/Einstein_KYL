@@ -88,21 +88,21 @@ int Logic::judgeResult()
 QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
 {
 
-    int a1 = 0; //a鐢ㄤ簬淇濆瓨涓変釜鏂瑰悜鐨勬鍊
+    int a1 = 0; //a用于保存三个方向的棋值
     float val = 0;
     float temp = 0;
     int flag = 0;
     int bestmoveX;
     int bestmoveY;
 
-    if (x > 0 && y > 0 ){ //鏈夊乏涓婃柟
+    if (x > 0 && y > 0 ){ //有左上方
         if (specialDeal(x,y)) {
             return QPoint(x,y);
         }
         a1 = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻宸︿笂鐐逛环鍊
+       //计算左上点价值
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
@@ -115,7 +115,7 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
                 }
 
 
-        //鏈€浼樻姝ワ紝鏉€寰楀鏂逛竴涓篃娌℃湁浜
+        //最优棋步，杀得对方一个也没有了
         bestmoveX = x - 1;
         bestmoveY = y - 1;
         if (flag == 0)
@@ -127,17 +127,17 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             return QPoint(x,y);
         }
         flag = 0;
-        //鎭㈠妫嬬洏
+        //恢复棋盘
         virtueTable[x][y] = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = a1;
-        //钃濇璧板乏涓-------------------------------------------------------
+         //蓝棋走左上--------------------------------------------------------
 
 
-        //钃濇璧板乏杈-------------------------------------------------------
+        //蓝棋走左边
         a1 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻宸﹁竟浠峰€
+        //计算左边价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -149,7 +149,7 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
                 }
 
 
-        //鏈€浼樻姝
+        //最优棋步
         if (flag == 0)
         {
             bestmoveX = x - 1;
@@ -166,17 +166,17 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             bestmoveY = y;
         }
         temp = 0;
-        //鎭㈠妫嬬洏
+        //恢复棋盘
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a1;
-        //钃濇璧板乏杈-------------------------------------------------------
+       //蓝棋走左边--------------------------------------------------------
 
 
-        //钃濇璧颁笂鏂-------------------------------------------------------
+       //蓝棋走上方--------------------------------------------------------
         a1 = virtueTable[x][y - 1];
         virtueTable[x][y -1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻涓婃柟浠峰€
+        //计算上方价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -197,34 +197,33 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
             return QPoint(x,y);
         }
         flag = 0;
-        //鏈€浼樻姝
+        //最优棋步
         if (temp < val)
         {
             val = temp;
             bestmoveX = x;
             bestmoveY = y - 1;
         }
-        //钃濇璧颁笂鏂-------------------------------------------------------
+        //蓝棋走上方--------------------------------------------------------
 
-
-        //鎭㈠妫嬬洏
+       //恢复棋盘
         virtueTable[x][y] = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = a1;
-        //鏈€缁堟渶浼樻姝
+        //最终最优棋步
         //qDebug()<<num1;
-        /********杩涜绉诲姩*********/
+        /********进行移动*********/
         x = bestmoveX;
         y = bestmoveY;
         return QPoint(x,y);
-        /********杩涜绉诲姩*********/
+      /********进行移动*********/
     }
-    else if (x == 0) //宸﹁竟涓哄锛岀敤涓嶇潃浼板€硷紝鍥犱负鍙兘璧板晩
+    else if (x == 0) //左边为墙，用不着估值，因为只能走啊
     {
         //qDebug()<<"BlueWhereToGo "<<depth<<":1";
         y = y - 1;
         return QPoint(x,y);
     }
-    else if (y == 0) //涓婃柟涓哄锛岀敤涓嶇潃浼板€硷紝鍥犱负鍙兘璧板晩
+    else if (y == 0) //上方为墙，用不着估值，因为只能走啊
     {
         //qDebug()<<"BlueWhereToGo "<<depth<<":1";
         x = x - 1;
@@ -238,11 +237,11 @@ QPoint Logic::blueWhereToGo(int x, int y, int depth, float alpha, float beta)
 
 bool Logic::specialDeal(int& x,int& y)
 {
-    //0731 鍓瑙掔嚎鍙栨秷鎺
+   //0731 副对角线取消掉
     int num1 = 0;
     int bestmoveX;
     int bestmoveY;
-    if (x > 0 && y > 0 && x < 4 && y < 4) //鏈夊乏涓婃柟
+    if (x > 0 && y > 0 && x < 4 && y < 4) //有左上方
     {
 
         int n = LINE, j = 0, m = 0;
@@ -306,7 +305,7 @@ bool Logic::specialDeal(int& x,int& y)
             }
         }
 
-        //0801瀹氬紡澶勭悊
+        //0801定式处理
         if (whoplay >= 10)
         {
             int x1 = (x - 1);
@@ -370,7 +369,7 @@ bool Logic::specialDeal(int& x,int& y)
                 }
             }
 
-            //0801瀹氬紡澶勭悊
+            //0801定式处理
             if (x == 3 && y == 2)
             {
                 if (virtueTable[x - 1][y - 1] < 0)
@@ -421,7 +420,7 @@ bool Logic::specialDeal(int& x,int& y)
             }
         }
 
-        //0731 鍓瑙掔嚎鍙栨秷鎺夊畾寮忓鐞
+        //0731 副对角线取消掉定式处理
         if (whoplay <= 10 && num1 == 1 && ((x == 2 && y == 3) || (x == 2 && y == 4) || (x == 3 && y == 2) || (x == 4 && y == 2) || (x == 3 && y == 3)))
         {
             if (virtueTable[x - 1][y] < 0)
@@ -470,7 +469,7 @@ bool Logic::specialDeal(int& x,int& y)
               }
           }
       }*/
-        //0801 瀹氬紡澶勭悊
+        //0801 定式处理
         if (num1 == 0 && ((x == 2 && y == 4) || (x == 4 && y == 2)))
         {
             bestmoveX = x - 1;
@@ -598,8 +597,8 @@ bool Logic::specialDeal(int& x,int& y)
 float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 {
 
-    //鑳滆礋宸插畾
-    //鍒ゆ柇杈撹耽鎵撳嵃淇℃伅
+    //胜负已定
+    //判断输赢打印信息
     if (judgeResult() == 1)
     {
         return -infinity;
@@ -614,23 +613,23 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 
     if (depth == 0)
     {
-        if (x > 0 && y > 0) //鏈夊乏涓婃柟
+        if (x > 0 && y > 0)//有左上方
         {
-            //閬嶅巻涓変釜鏂瑰悜瀵绘眰value()鏈€澶у€
+            //遍历三个方向寻求value()最大值
             //qDebug()<<"BlueMin "<<depth<<":3";
-            //宸︿笂
+            //左上
             a2 = virtueTable[x - 1][y - 1];
             virtueTable[x - 1][y - 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
             val = value();
             virtueTable[x][y] = virtueTable[x - 1][y - 1];
             virtueTable[x - 1][y - 1] = a2;
-            //Alpha鍓灊
+            //Alpha剪枝
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
 
-            //宸﹁竟
+           //左边
             a2 = virtueTable[x - 1][y];
             virtueTable[x - 1][y] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -641,12 +640,12 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x - 1][y] = a2;
-            //Alpha鍓灊
+             //Alpha剪枝
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
 
-            //涓婃柟
+             //上方
             a2 = virtueTable[x][y - 1];
             virtueTable[x][y - 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -657,7 +656,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x][y - 1] = a2;
-            //Alpha鍓灊
+            //Alpha剪枝
             beta = qMin(beta, val);
             if (beta <= alpha)
                 return beta;
@@ -687,13 +686,13 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
 
     if (x > 0 && y > 0) //鏈夊乏涓婃柟
     {
-        //閬嶅巻涓変釜鏂瑰悜瀵绘眰value()鏈€澶у€
+        //遍历三个方向寻求value()最大值
         //qDebug()<<"BlueqMin "<<depth<<":3";
-        //钃濇璧板乏涓-------------------------------------------------------
+        //蓝棋走左上--------------------------------------------------------
         a2 = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻宸︿笂鐐逛环鍊
+        //计算左边价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -702,7 +701,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     val += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //鎭㈠妫嬬洏
+        //最优棋步
         virtueTable[x][y] = virtueTable[x - 1][y - 1];
         virtueTable[x - 1][y - 1] = a2;
         //Alpha鍓灊
@@ -710,11 +709,11 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
         if (beta <= alpha)
             return beta;
 
-        //钃濇璧板乏杈-------------------------------------------------------
+         //蓝棋走左边--------------------------------------------------------
         a2 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻宸﹁竟浠峰€
+        //计算左边价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -723,25 +722,25 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     temp += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //鏈€浼樻姝
+         //最优棋步
         if (temp < val)
         {
             val = temp;
         }
         temp = 0;
-        //鎭㈠妫嬬洏
+        //最优棋步
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a2;
-        //Alpha鍓灊
+        //Alpha剪枝
         beta = qMin(beta, val);
         if (beta <= alpha)
             return beta;
 
-        //钃濇璧颁笂鏂-------------------------------------------------------
+       //蓝棋走上方--------------------------------------------------------
         a2 = virtueTable[x][y - 1];
         virtueTable[x][y - 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻涓婃柟浠峰€
+        //计算上方价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -750,7 +749,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     temp += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //鏈€浼樻姝
+       //最优棋步
         if (temp < val)
         {
             val = temp;
@@ -786,11 +785,11 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
     else if (y == 0)
     {
         //qDebug()<<"BlueqMin "<<depth<<":1";
-        //钃濇璧板乏杈-------------------------------------------------------
+        //蓝棋走上方--------------------------------------------------------
         a2 = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = virtueTable[x][y];
         virtueTable[x][y] = 0;
-        //璁＄畻宸﹁竟浠峰€
+          //计算上方价值
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] < 0)
@@ -799,7 +798,7 @@ float Logic::blueMin(int x, int y, int depth, float alpha, float beta)
                     redReady();
                     val += redProbability[-virtueTable[i][j] - 1] * redMax(i, j, /*num,*/ depth - 1, alpha, beta);
                 }
-        //鎭㈠妫嬬洏
+        //恢复棋盘
         virtueTable[x][y] = virtueTable[x - 1][y];
         virtueTable[x - 1][y] = a2;
     }
@@ -817,8 +816,8 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
         return infinity;
     }
 
-    //鑳滆礋宸插畾
-    //鍒ゆ柇杈撹耽鎵撳嵃淇℃伅
+    //胜负已定
+    //判断输赢打印信息
     if (judgeResult() == 1)
     {
         return -infinity;
@@ -831,36 +830,37 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
     int a;
     float val = 0, temp = 0;
 
-    if (depth == 0) //宸茬粡杈惧埌鏈€娣卞害
+    if (depth == 0) //已经达到最深度
     {
-        if (x < 4 && y < 4) //鏈夊彸涓嬫柟,杩欐牱
+        if (x < 4 && y < 4) ///有右下方,这样
         {
-            //閬嶅巻涓変釜鏂瑰悜瀵绘眰value()鏈€澶у€
+            //遍历三个方向寻求value()最大值
             //qDebug()<<"RedMax "<<depth<<":3";
 
 
-            /*****************鍙充笅**************/
+            /*****************右下**************/
 
-            /*********鍏堟ā鎷熻蛋涓€姝******/
+            /*********先模拟走一步*******/
             a = virtueTable[x + 1][y + 1];
             virtueTable[x + 1][y + 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
-            val = value();  //璁＄畻褰撳墠鐨勪及鍊煎嚱鏁
-            /*********鍏堟ā鎷熻蛋涓€姝******/
+            val = value(); //计算当前的估值函数
+            /*********先模拟走一步*******/
 
-            /******鎾ゅ嚭妯℃嫙鐘舵€******/
+            /******撤出模拟状态*******/
             virtueTable[x][y] = virtueTable[x + 1][y + 1];
             virtueTable[x + 1][y + 1] = a;
-            /******鎾ゅ嚭妯℃嫙鐘舵€******/
-            //Beta鍓灊
+            /******撤出模拟状态*******/
+            //Beta剪枝
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
 
-            /*****************鍙充笅**************/
+
+            /*****************右下**************/
 
 
-            /*****************鍙**************/
+            /*****************右***************/
             a = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -871,14 +871,14 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x + 1][y] = a;
-            //Beta鍓灊
+            //Beta剪枝
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
-            /*****************鍙**************/
+            /*****************右***************/
 
 
-            /****************涓**************/
+            /****************下***************/
             a = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = virtueTable[x][y];
             virtueTable[x][y] = 0;
@@ -889,15 +889,15 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
                 val = temp;
             }
             virtueTable[x][y + 1] = a;
-            //Beta鍓灊
+            //Beta剪枝
             alpha = qMax(alpha, val);
             if (beta <= alpha)
                 return alpha;
-            /****************涓**************/
+            /****************下***************/
         }
         else if (x == 4)
         {
-            /****************涓**************/
+            /****************下***************/
             //qDebug()<<"RedMax "<<depth<<":1";
             a = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = virtueTable[x][y];
@@ -905,11 +905,11 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
             val = value();
             virtueTable[x][y] = virtueTable[x][y + 1];
             virtueTable[x][y + 1] = a;
-            /****************涓**************/
+             /****************下***************/
         }
         else if (y == 4)
         {
-            /***********鍙****************/
+             /***********右*****************/
             //qDebug()<<"RedMax "<<depth<<":1";
             a = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = virtueTable[x][y];
@@ -917,21 +917,21 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
             val = value();
             virtueTable[x][y] = virtueTable[x + 1][y];
             virtueTable[x + 1][y] = a;
-            /***********鍙****************/
+             /***********右*****************/
         }
         return val; //鍥犱负鍒拌竟鐣屼笂鍙湁涓€鏉¤矾鍙蛋锛屾墍浠ヨ鐩存帴杩斿洖val
     }
 
 
 
-    //杩樻病鏈夎揪鍒版渶娣卞害
 
     //杩樻病鏈夎揪鍒版渶娣卞害
     if (x < 4 && y < 4) //鏈夊彸涓嬫柟
     {
-        //閬嶅巻涓変釜鏂瑰悜瀵绘眰value()鏈€澶у€
+        //遍历三个方向寻求value()最大值
         //qDebug()<<"RedMax "<<depth<<":3";
-        //绾㈡璧板彸涓-------------------------------------------------------
+        //红棋走右下--------------------------------------------------------
+        a = virtueTable[x + 1][y + 1];
         a = virtueTable[x + 1][y + 1];
         virtueTable[x + 1][y + 1] = virtueTable[x][y];
         virtueTable[x][y] = 0;
@@ -940,7 +940,7 @@ float Logic::redMax(int x, int y, int depth, float alpha, float beta)
             for (int j = 0; j < 5; j++)
                 if (virtueTable[i][j] > 0)
                 {
-                    blueReady(); //鑾峰彇blueprobability,骞舵ā鎷熸敼鍙樼殑妫嬬洏
+                    blueReady(); //get blueprobability,and update the values of chess
                     val += blueProbability[virtueTable[i][j] - 1] * blueMin(i, j, depth - 1, alpha, beta);
                 }
 
@@ -1058,15 +1058,15 @@ float Logic::value()
     float redThreaten = 0;
     float val = 0;
 
-    blueReady(); //寰楀埌浜嗚摑绾㈠弻鏂圭殑浠峰€间互鍙婅摑鏂圭殑涓綋濞佽儊鍊
+    blueReady(); //得到了蓝红双方的价值以及蓝方的个体威胁值
     for (int i = 0; i < SIZE; i++){
-        if (qAbs(blueProbability[i]-0.00f) > 0.005) //妫嬪瓙瀛樺湪
+        if (qAbs(blueProbability[i]-0.00f) > 0.005) //棋子存在
         {
-            bluedistance += blueProbability[i] * blueValue[i]; //鎴戞柟杩涙敾鍊
+            bluedistance += blueProbability[i] * blueValue[i]; //我方进攻值
             blueThreaten+= blueProbability[i] * bluethreaten[i];
         }
     }
-    // 钃濇柟鐨勫▉鑳佸€
+    // 蓝方的威胁值
 
 
 
