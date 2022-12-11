@@ -288,6 +288,7 @@ void MainWindow::on_diceButton_clicked()
 
     int dice = qrand()%6+1;
     board.setDice(dice);
+    logic.setRand(board.getDice());
 
     QString str = board.getNowPlayerStr()+"投掷出了" + QString::number(dice);
     ui->boardStatusBar->append(str);
