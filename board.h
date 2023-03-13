@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QMap>
+#include <QPoint>
 
 
 class Board
@@ -59,8 +60,8 @@ private:
     int dice; //骰子数
 
     // 保存我红方的蓝方的棋子，还有棋子的位置，0位置为x，1位置为y
-    QMap<int,QMap<char,int>> redChessMap;
-    QMap<int,QMap<char,int>> blueChessMap;
+    QMap<int,QPoint> redChessMap;
+    QMap<int,QPoint> blueChessMap;
 
     // 用于棋局备份
     QVector<QVector<QVector<int>>> backupBoards;

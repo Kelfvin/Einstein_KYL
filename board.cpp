@@ -246,11 +246,11 @@ int Board::checkWin()
 void Board::addToChessMap(int value, int x, int y)
 {
     if(value>0){
-        blueChessMap[value]['x'] = x;
-        blueChessMap[value]['y'] = y;
+        blueChessMap[value].setX(x);
+        blueChessMap[value].setY(y);
     }else{
-        redChessMap[value]['x'] = x;
-        redChessMap[value]['y'] = y;
+        redChessMap[value].setX(x);
+        redChessMap[value].setY(y);
     }
 }
 
@@ -289,7 +289,6 @@ void Board::initDefaultChessSet()
     board[1][0] = -arr[3];
     board[1][1] = -arr[4];
     board[2][0] = -arr[5];
-
 
 }
 
