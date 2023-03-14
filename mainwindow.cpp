@@ -198,36 +198,37 @@ void MainWindow::letAIDo()
 void MainWindow::moveChess(int x1, int y1, int x2, int y2)
 {
 
-
-
     bool success =  board.moveChess(x1,y1,x2,y2);
 
 
     selectedPosition['x'] = -1;
     selectedPosition['y'] = -1;
+
     if(success){
         char buffer[100];
         sprintf(buffer,"移动(%d,%d)->(%d,%d)",x1,y1,x2,y2);
         QString moveInfo = buffer;
         ui->boardStatusBar->append(intToColor(-board.getNowPlayer())+moveInfo);
 
+        board.backup();
+
         int win = board.checkWin();
-    if(win== 0){
-        ui->boardStatusBar->append("现在该"+board.getNowPlayerStr()+"出手");
-    }
+        if(win== 0){
+            ui->boardStatusBar->append("现在该"+board.getNowPlayerStr()+"出手");
+        }
 
-    else if(win == 1){
-       showMsg("蓝方赢了！");
-    }
+        else if(win == 1){
+           showMsg("蓝方赢了！");
+        }
 
-    else{
-       showMsg("红方赢了");
-    }
+        else{
+           showMsg("红方赢了");
+        }
 
 
-    }else{
-        showMsg("操作非法！");
-    }
+        }else{
+            showMsg("操作非法！");
+        }
 
     update();
 }
@@ -320,9 +321,12 @@ void MainWindow::on_startMatchButton_clicked()
 
         ui->startMatchButton->setEnabled(false);
         ui->diceButton->setEnabled(true);
-        ui->backButton->setEnabled(true);
+        ui->backButton->setEnabled(false);
         ui->setSenteComboBox->setEnabled(false);
         ui->setOurColorComboBox->setEnabled(false);
+
+        // 备份初始棋局
+        board.backup();
     }
 
     else{
@@ -343,11 +347,13 @@ void MainWindow::on_searchDeepCombBox_currentIndexChanged(int index)
 
 void MainWindow::on_backButton_clicked()
 {
+
+    if(!board.canUndo()){
+        ui->backButton->setEnabled(false);
+    }
+
     board.undo();
     ui->boardStatusBar->append("撤销");
-    if(!board.canUndo()){
-//        ui->backButton->setEnabled(false);
-    }
     update();
 }
 

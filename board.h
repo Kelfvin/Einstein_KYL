@@ -59,7 +59,7 @@ private:
 
     int dice; //骰子数
 
-    // 保存我红方的蓝方的棋子，还有棋子的位置，0位置为x，1位置为y
+    // 保存我红方的蓝方的棋子，还有棋子的位置
     QMap<int,QPoint> redChessMap;
     QMap<int,QPoint> blueChessMap;
 

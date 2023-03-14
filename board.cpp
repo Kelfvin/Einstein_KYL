@@ -90,15 +90,14 @@ bool Board::moveChess(int startx, int starty, int endx, int endy)
 
 bool Board::undo()
 {
-    if(backupIndex < 0){
+    if(backupIndex <= 0){
         return false;
     }
 
     else{
 
-        board = backupBoards[backupIndex];
+        board = backupBoards[--backupIndex];
         nowPlayer = -nowPlayer;
-        backupIndex--;
         return true;
     }
 
@@ -119,13 +118,12 @@ bool Board::cancelUndo()
 
 void Board::backup()
 {
-    backupIndex++;
     if(backupIndex+1==backupBoards.length()){
         backupBoards.append(board);
     }
 
     else{
-        backupBoards.resize(backupIndex+1);
+        backupBoards[++backupIndex]=board;
     }
 }
 
