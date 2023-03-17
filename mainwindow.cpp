@@ -28,10 +28,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->backButton->setEnabled(false);
     ui->diceButton->setEnabled(false);
+    ui->setDiceComboBox->setEnabled(false);
+    ui->useGivenDiceButton->setEnabled(false);
 
     initSearchDeepCombBox();
     initSetSenteCombBox();
     initSetOurColorCombBox();
+    initSetDiceCombBox();
 
 }
 
@@ -87,6 +90,14 @@ void MainWindow::initSetOurColorCombBox()
 {
     ui->setOurColorComboBox->addItem("蓝色");
     ui->setOurColorComboBox->addItem("红色");
+}
+
+void MainWindow::initSetDiceCombBox()
+{
+    for(int i = 1;i<=6;i++){
+        ui->setDiceComboBox->addItem(QString::number(i));
+    }
+
 }
 
 void MainWindow::initSetSenteCombBox()
@@ -319,6 +330,8 @@ void MainWindow::on_startMatchButton_clicked()
 
         ui->boardStatusBar->append("现在是"+board.getNowPlayerStr()+"出手");
 
+        ui->setDiceComboBox->setEnabled(true);
+        ui->useGivenDiceButton->setEnabled(true);
         ui->startMatchButton->setEnabled(false);
         ui->diceButton->setEnabled(true);
         ui->backButton->setEnabled(false);
@@ -327,6 +340,7 @@ void MainWindow::on_startMatchButton_clicked()
 
         // 备份初始棋局
         board.backup();
+
     }
 
     else{
@@ -383,4 +397,31 @@ void MainWindow::on_setSenteComboBox_currentIndexChanged(int index)
      logic.setSente(board.getSente());
 
      ui->boardStatusBar->append("设置先手颜色为"+intToColor(color));
+}
+
+void MainWindow::on_useGivenDiceButton_clicked()
+{
+    int diceNum = ui->setDiceComboBox->currentText().toUInt();
+
+    if(diceNum>=1&&diceNum<=6){
+        logic.setRand(diceNum);
+    }
+
+    else{
+        showMsg("请选择正确的骰子数");
+    }
+
+
+    // 如果是我们的轮，就让 AI 算法来走
+    if(board.getNowPlayer()==board.getOurColor()){
+        letAIDo();
+    }
+
+    else{
+        showMsg("现在是对方行走");
+    }
+
+
+    ui->backButton->setEnabled(true);
+
 }

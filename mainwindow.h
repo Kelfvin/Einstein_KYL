@@ -22,6 +22,7 @@ private:
     void showMsg(QString str);
     void initSearchDeepCombBox();
     void initSetOurColorCombBox();
+    void initSetDiceCombBox();
     void initSetSenteCombBox();
     void drawChessNumber(int x,int y);
     void drawBoardNumber();
@@ -56,6 +57,8 @@ private slots:
 
     void on_setSenteComboBox_currentIndexChanged(int index);
 
+
+    void on_useGivenDiceButton_clicked();
 
 private:
     Ui::MainWindow *ui;
