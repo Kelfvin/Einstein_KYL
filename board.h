@@ -49,6 +49,7 @@ private:
      * @param y
      */
     void addToChessMap(int value ,int x , int y);
+
     void initDefaultChessSet();
     void removeFromChessMap(int value);
 

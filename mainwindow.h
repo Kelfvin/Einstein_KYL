@@ -18,28 +18,28 @@ public:
     ~MainWindow();
 
 private:
-    void onBoardTap(int x , int y);
-    void showMsg(QString str);
-    void initSearchDeepCombBox();
-    void initSetOurColorCombBox();
-    void initSetDiceCombBox();
-    void initSetSenteCombBox();
-    void drawChessNumber(int x,int y);
-    void drawBoardNumber();
-    void drawBoardColor();
-    void drawBoardLine();
-    void letAIDo();
-    void moveChess(int x1, int y1, int x2,int y2);
+    void onBoardTap(int x , int y); // 点击棋盘事件
+    void showMsg(QString str);  // 展示提示框
+    void initSearchDeepCombBox();   // 初始化搜索深度的下拉框
+    void initSetOurColorCombBox();  // 初始化我方队伍颜色的下拉框
+    void initSetDiceCombBox();  // 初始化指定 骰子数的下拉框
+    void initSetSenteCombBox(); // 初始化先手的下拉框
+    void drawChessNumber(int x,int y);  // 画棋盘上的一个棋子的数值
+    void drawBoardNumber(); // 画整个棋盘上所有的棋子的编号
+    void drawBoardColor();  // 画棋盘上的所有的棋子的颜色
+    void drawBoardLine();   // 画棋盘的线
+    void letAIDo(); // 交给AI来行走棋子，并显示在棋盘上
+    void moveChess(int x1, int y1, int x2,int y2);  // 移动指定位置的棋子到指定的位置
 
-    QString intToColor(int value);
+    QString intToColor(int value);  // 返回棋子编号对应的颜色，正数是蓝色，负数为红色
 
 protected:
-    void paintEvent(QPaintEvent * event);
-    void mousePressEvent(QMouseEvent *event);
-    int getChessRoundIndex();
+    void paintEvent(QPaintEvent * event);   // 画面更新的时候，调用的一个函数
+    void mousePressEvent(QMouseEvent *event);   // 点击鼠标的事件，如果是在棋盘的上面才进行进一步的判断
+    int getChessRoundIndex();   // 返回1~6的随机数
 
 
-
+// 信号槽
 private slots:
 
     void on_diceButton_clicked();
@@ -61,7 +61,7 @@ private slots:
     void on_useGivenDiceButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui; // 指向ui文件里面的类创建的 对象
 
     // 博弈变量
     int searchDeep;

@@ -175,7 +175,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>指定骰子数行走</string>
+     <string>指定数行走</string>
     </property>
    </widget>
    <widget class="QComboBox" name="setDiceComboBox">
@@ -193,7 +193,7 @@
      <rect>
       <x>20</x>
       <y>560</y>
-      <width>101</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>
@@ -208,7 +208,7 @@
      <x>0</x>
      <y>0</y>
      <width>1006</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>
